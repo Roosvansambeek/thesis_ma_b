@@ -9,7 +9,6 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 
 
-
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
 engine = create_engine(
@@ -21,41 +20,41 @@ engine = create_engine(
   }
 )
 
-CountVectorizer = CountVectorizer(stop_words='english')
+count_vectorizer = CountVectorizer(stop_words='english')
 
 def get_recommendations_course_BOW(course_code):
     Base = declarative_base()
-    
+
     class Cinfo(Base):
         __tablename__ = 'r_courses'  
-    
+
         content = Column(String, primary_key=True)
         course_code = Column(String, primary_key=True)
         course_name = Column(String, primary_key=True)
-    
+
     Session = sessionmaker(bind=engine)
     session = Session()
-    
-    # Fetch data from the r_views table
+
+
     course_contents = session.query(Cinfo.content, Cinfo.course_code, Cinfo.course_name).all()
-    
+
     course_contents_df = pd.DataFrame(course_contents, columns=['course_content', 'course_code', 'course_title'])
-    
-    # Create indices
+
+
     indices = pd.Series(course_contents_df.index, index=course_contents_df['course_code']).drop_duplicates()
-    
-    # Now you can access indices using course code
+
+
     course_contents = [row[0] for row in course_contents]
-    
-    course_content_matrix = CountVectorizer.fit_transform(course_contents)
-    # Close the session
+
+    course_content_matrix = count_vectorizer.fit_transform(course_contents)
+
     session.close()
-    
+
     cosine_sim = cosine_similarity(course_content_matrix, course_content_matrix)
-    
+
     indices = pd.Series(course_contents_df.index, index=course_contents_df['course_code']).drop_duplicates()
-    #print(indices)
-  
+
+
 
     idx = indices[course_code]
     sim_scores = enumerate(cosine_sim[idx])
@@ -64,7 +63,7 @@ def get_recommendations_course_BOW(course_code):
 
     similar_courses = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     top_recommendations = similar_courses[1:4]
-    #print(top_recommendations)
+
 
     course_recommendations = {
         "recommended_courses": [
@@ -80,10 +79,9 @@ def get_recommendations_course_BOW(course_code):
 
     top_recommendations.append(course_recommendations)
 
-    #print(top_recommendations)
+    
 
     return top_recommendations
-
 
 
 
