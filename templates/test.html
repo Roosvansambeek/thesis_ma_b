@@ -1,0 +1,46 @@
+<!-- Updated form with the necessary data attributes -->
+<form id="starForm" student_number="123">
+  <input type="checkbox" id="starCheckbox" style="display: none;">
+  <label for="starCheckbox">
+    <svg id="star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </label>
+</form>
+
+<script>
+  document.getElementById("starCheckbox").addEventListener("change", function() {
+    const star = document.getElementById("star");
+    if (this.checked) {
+      // Set the star to filled when checked
+      star.setAttribute("fill", "#FFD700");
+      sendStarStatus(true); // Send star status 'on'
+    } else {
+      // Set the star to outline when unchecked
+      star.setAttribute("fill", "#000");
+      sendStarStatus(false); // Send star status 'off'
+    }
+  });
+
+  function sendStarStatus(status) {
+    const student_number = document.getElementById("starForm").getAttribute("student_number");
+    // Send an HTTP request to your backend with the course ID and star status
+    fetch(`/update_star_status/${student_number}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ star_status: status }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Star status updated:", data);
+      })
+      .catch((error) => {
+        console.error("Error updating star status:", error);
+      });
+  }
+</script>
+
+

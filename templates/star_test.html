@@ -1,0 +1,46 @@
+<!-- Add your star SVG and necessary HTML structure -->
+<label for="starCheckbox">
+  <svg id="star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+  </svg>
+</label>
+
+<script>
+  const star = document.getElementById("star");
+
+  star.addEventListener("click", function() {
+    const isChecked = this.getAttribute("fill") === "#FFD700"; // Check if the star is filled
+
+    // Update the star's appearance
+    if (isChecked) {
+      this.setAttribute("fill", "none");
+      sendDataToDatabase("off"); // Send 'off' status to the database
+    } else {
+      this.setAttribute("fill", "#FFD700");
+      sendDataToDatabase("on"); // Send 'on' status to the database
+    }
+  });
+
+  // Function to send data to the database (AJAX request)
+  function sendDataToDatabase(status) {
+    // Example: Send an AJAX POST request
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/update_star_status", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({ status: status }));
+
+    // Handle response if needed
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log("Database updated successfully");
+        } else {
+          console.error("Error updating database");
+        }
+      }
+    };
+  }
+</script>
+
+

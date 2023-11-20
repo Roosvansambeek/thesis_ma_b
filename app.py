@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
-from database import load_courses_from_db, load_carousel_courses_from_db, load_favorite_courses_from_db, add_interests_to_db , add_login_to_db, update_interests, add_views_to_db, add_test_to_db,  load_viewed_courses_from_db, search_courses_from_db, load_ratings_and_details_for_viewed_courses
+from database import load_courses_from_db, load_carousel_courses_from_db, load_favorite_courses_from_db, add_interests_to_db , add_login_to_db, update_interests, add_views_to_db, add_test_to_db,  load_viewed_courses_from_db, search_courses_from_db, load_ratings_and_details_for_viewed_courses, add_or_update_star_rating
 from flask import request, redirect, url_for, flash
 from datetime import datetime
 
@@ -140,6 +140,28 @@ def search():
     student_number = session.get('student_number') # Replace this with the actual 
     results = search_courses_from_db(query)
     return render_template('search_results.html', query=query, results=results, student_number=student_number)
+
+@app.route("/disclaimer/<student_number>")
+def disclaimer(student_number):
+  student_number = session.get('student_number')
+  return render_template('disclaimer.html', student_number=student_number)
+
+@app.route("/test/<student_number>")
+def test(student_number):
+  student_number = session.get('student_number')
+  return render_template('test.html', student_number=student_number)
+
+  
+@app.route('/test/<student_number>/submit', methods=['POST', 'GET'])
+def update_star_status():
+    star_status = request.json.get('star_status')
+    if star_status is not None and star_status in ['on', 'off']:
+        add_or_update_star_rating(course_id, star_status)
+        return jsonify({'message': 'Star status updated successfully'}), 200
+    else:
+        return jsonify({'error': 'Invalid star status'}), 400
+
+
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)

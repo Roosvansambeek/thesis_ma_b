@@ -17,7 +17,7 @@
                         <div class="carousel-item{% if loop.first %} active{% endif %}">
                             <div class="row">
                                 {% for recommended_course in student_recommendation['recommended_courses'][i:i+3] %}
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <!-- Your content for each recommended course goes here -->
                                         <a href="/course/{{ recommended_course['course_code'] }}/{{ student_recommendation['student_number'] }}" class="card" style="width: 330px; height: 260px;">
                                             <div class="card-body">

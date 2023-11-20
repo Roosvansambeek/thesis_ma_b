@@ -146,8 +146,8 @@ def add_login_to_db(student_number, level, education):
 
 def add_interests_to_db(data):
   with engine.connect() as conn:
-      query = text("INSERT INTO r_users (management, data, law, businesses, psychology, economics, statistics, finance, philosophy, sociology, entrepreneurship, marketing, accounting, econometrics, media, ethics, programming, health, society, technology, communication, history, culture, language) "
-                   "VALUES (:management, :data, :law, :businesses, :psychology, :economics, :statistics, :finance, :philosophy, :sociology, :entrepreneurship, :marketing, :accounting, :econometrics, :media, :ethics, :programming, :health, :society, :technology, :communication, :history, :culture, :language)")
+      query = text("INSERT INTO r_users (management, data, law, businesses, psychology, economics, statistics, finance, philosophy, sociology, entrepreneurship, marketing, accounting, econometrics, media, ethics, programming, health, society, technology, communication, history, culture, language, machine_learning, supply_chain, organizations, mathematics, sustainability, consumers, digital, governance, cognitive_science, artificial_intelligence, deep_learning, religion, globalization, behavior, theology, spirituality, criminality) "
+                   "VALUES (:management, :data, :law, :businesses, :psychology, :economics, :statistics, :finance, :philosophy, :sociology, :entrepreneurship, :marketing, :accounting, :econometrics, :media, :ethics, :programming, :health, :society, :technology, :communication, :history, :culture, :language, :machine_learning, :supply_chain, :organizations, :mathematics, :sustainability, :consumers, :digital, :governance, :cognitive_science, :artificial_intelligence, :deep_learning, :religion, :globalization, :behavior, :theology, :spirituality, :criminality)")
 
 
       params = {
@@ -174,7 +174,25 @@ def add_interests_to_db(data):
             'communication': data.get('communication'),
             'history': data.get('history'),
             'culture': data.get('culture'),
-            'language': data.get('language')
+            'language': data.get('language'),
+            'machine_learning': data.get('machine_learning'),
+            'supply_chain': data.get('supply_chain'),
+            'organizations': data.get('organizations'),
+            'mathematics': data.get('mathematics'),
+            'sustainability': data.get('sustainability'),
+            'consumers': data.get('consumers'),
+            'digital': data.get('digital'),
+            'governance': data.get('governance'),
+            'cognitive_science': data.get('cognitive_science'),
+            'artificial_intelligence': data.get('artificial_intelligence'),
+            'deep_learning': data.get('deep_learning'),
+            'religion': data.get('religion'),
+            'globalization': data.get('globalization'),
+            'behavior': data.get('behavior'),
+            'theology': data.get('theology'),
+            'spirituality': data.get('spirituality'),
+            'criminality': data.get('criminality')
+                                        
         }
 
 
@@ -208,8 +226,25 @@ def update_interests(student_number, data):
           "communication = :communication, "
           "history = :history, "
           "culture = :culture, "
-          "language = :language "
-              "WHERE student_number = :student_number "
+          "language = :language, "
+          "machine_learning = :machine_learning, "
+          "supply_chain = :supply_chain, "
+          "organizations = :organizations,"
+          "mathematics = :mathematics, "
+          "sustainability = :sustainability, "
+          "consumers = :consumers, "
+          "digital = :digital, "
+          "governance = :governance, "
+          "cognitive_science = :cognitive_science, "
+          "artificial_intelligence = :artificial_intelligence, "
+          "deep_learning = :deep_learning, "
+          "religion = :religion, "
+          "globalization = :globalization, "
+          "behavior = :behavior, "
+          "theology = :theology, "
+          "spirituality = :spirituality, "
+          "criminality = :criminality "
+          "WHERE student_number = :student_number "
           )
 
       params = {
@@ -237,6 +272,23 @@ def update_interests(student_number, data):
           'history': data.get('history'),
           'culture': data.get('culture'),
           'language': data.get('language'),
+          'machine_learning': data.get('machine_learning'),
+          'supply_chain': data.get('supply_chain'),
+          'organizations': data.get('organizations'),
+          'mathematics': data.get('mathematics'),
+          'sustainability': data.get('sustainability'),
+          'consumers': data.get('consumers'),
+          'digital': data.get('digital'),
+          'governance': data.get('governance'),
+          'cognitive_science': data.get('cognitive_science'),
+          'artificial_intelligence': data.get('artificial_intelligence'),
+          'deep_learning': data.get('deep_learning'),
+          'religion': data.get('religion'),
+          'globalization': data.get('globalization'),
+          'behavior': data.get('behavior'),
+          'theology': data.get('theology'),
+          'spirituality': data.get('spirituality'),
+          'criminality': data.get('criminality'),
           'student_number': student_number
       }
 
@@ -278,8 +330,3 @@ def search_courses_from_db(query):
           result_dict = {column: value for column, value in zip(columns, row)}
           courses.append(result_dict)
       return courses
-
-
-
-
-
